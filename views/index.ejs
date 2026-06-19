@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📊 BMI Calculator</h1>
+        
+        <!-- TAAL KNOPPEN -->
+        <div class="language-switch">
+            <button class="lang-btn active" onclick="setLanguage('nl')">🇳🇱 NL</button>
+            <button class="lang-btn" onclick="setLanguage('en')">🇬🇧 EN</button>
+        </div>
+        
+        <!-- INPUT -->
+        <div class="input-group">
+            <label id="labelLength">Lengte (cm)</label>
+            <input type="number" id="length" placeholder="175">
+        </div>
+        
+        <div class="input-group">
+            <label id="labelWeight">Gewicht (kg)</label>
+            <input type="number" id="weight" placeholder="70">
+        </div>
+        
+        <button id="saveBtn">Bereken BMI</button>
+        
+        <!-- RESULTAAT -->
+        <div id="resultCard" style="display: none; margin-top: 20px; padding: 20px; background: #f0f0f0; border-radius: 12px;">
+            <h2>Jouw BMI</h2>
+            <div id="bmiValue" style="font-size: 48px; font-weight: bold;">-</div>
+            <div id="bmiCategory">-</div>
+            <p id="adviceText" style="margin-top: 10px;"></p>
+        </div>
+        
+        <!-- METINGEN LIJST -->
+        <div style="margin-top: 30px;">
+            <h2>📋 Geschiedenis</h2>
+            <div id="measurementsList"></div>
+            <button id="clearAllBtn" style="margin-top: 10px; background: #f44336; color: white; border: none; padding: 10px; border-radius: 8px; width: 100%;">Alles wissen</button>
+        </div>
+    </div>
+    
+    <!-- SCRIPTS -->
+    <script src="/js/db.js"></script>
+    <script src="/js/i18n.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>

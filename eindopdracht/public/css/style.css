@@ -1,252 +1,393 @@
+/* ============================================
+   MOBILE FIRST - BMI APP
+   ============================================ */
+
+/* ---- BASIS STYLING (voor alle schermen) ---- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-:root {
-    --primary: #4CAF50;
-    --primary-dark: #388E3C;
-    --danger: #f44336;
-    --warning: #FF9800;
-    --info: #2196F3;
-    --dark: #333;
-    --light: #f5f5f5;
-    --shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
 body {
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-family: system-ui, -apple-system, sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
-    padding: 20px;
+    padding: 16px;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 600px;
     margin: 0 auto;
-}
-
-/* Header */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 30px;
     background: white;
-    padding: 15px 25px;
-    border-radius: 16px;
-    box-shadow: var(--shadow);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
 
+/* ---- TITEL ---- */
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 16px;
+    font-size: 24px;
+}
+
+/* ---- TAAL KNOPPEN ---- */
 .language-switch {
     display: flex;
-    gap: 10px;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
 }
 
 .lang-btn {
     padding: 8px 16px;
-    border: none;
-    border-radius: 8px;
+    border: 2px solid #ddd;
+    border-radius: 30px;
     cursor: pointer;
-    background: var(--light);
+    font-weight: 600;
+    background: white;
+    font-size: 14px;
     transition: all 0.2s;
+    flex: 1;
+    max-width: 120px;
 }
 
 .lang-btn.active {
-    background: var(--primary);
+    background: #667eea;
     color: white;
+    border-color: #667eea;
 }
 
-/* Grid layout voor dashboard */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 25px;
-    margin-bottom: 25px;
+.lang-btn:hover:not(.active) {
+    background: #f0f0f0;
 }
 
-.card {
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: var(--shadow);
+/* ---- INPUT GROEPEN ---- */
+.input-group {
+    margin-bottom: 12px;
 }
 
-.card h2 {
-    margin-bottom: 20px;
-    color: var(--dark);
-    border-bottom: 2px solid var(--primary);
-    padding-bottom: 10px;
-}
-
-/* Form styling */
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
+.input-group label {
     display: block;
-    margin-bottom: 5px;
     font-weight: 600;
+    color: #555;
+    margin-bottom: 4px;
+    font-size: 15px;
 }
 
-.form-group input {
+.input-group input {
     width: 100%;
-    padding: 12px;
+    padding: 12px 14px;
     border: 2px solid #ddd;
     border-radius: 12px;
     font-size: 16px;
+    transition: border-color 0.2s;
 }
 
-.form-group input:focus {
-    border-color: var(--primary);
+.input-group input:focus {
+    border-color: #667eea;
     outline: none;
 }
 
-button {
-    background: var(--primary);
+/* ---- BEREKEN KNOP ---- */
+#saveBtn {
+    width: 100%;
+    padding: 14px;
+    background: #4CAF50;
     color: white;
     border: none;
-    padding: 12px 20px;
     border-radius: 12px;
+    font-size: 17px;
+    font-weight: bold;
     cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
     transition: transform 0.1s, background 0.2s;
+    margin-top: 4px;
 }
 
-button:hover {
-    background: var(--primary-dark);
-    transform: scale(1.02);
+#saveBtn:hover {
+    background: #388E3C;
 }
 
-button.danger {
-    background: var(--danger);
+#saveBtn:active {
+    transform: scale(0.98);
 }
 
-button.warning {
-    background: var(--warning);
-}
-
-/* Resultaat weergave */
-.result-card {
+/* ---- RESULTAAT ---- */
+#resultCard {
+    margin-top: 20px;
+    padding: 16px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    border-radius: 16px;
     text-align: center;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
+}
+
+#resultCard h2 {
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 18px;
 }
 
 .bmi-value {
     font-size: 48px;
     font-weight: bold;
-    margin: 15px 0;
+    color: #333;
+    margin: 8px 0;
 }
 
-/* Lijst van metingen */
-.measurements-list {
-    max-height: 400px;
-    overflow-y: auto;
+#bmiCategory {
+    margin: 8px 0;
+}
+
+#adviceText {
+    margin-top: 12px;
+    font-size: 15px;
+    color: #555;
+    font-weight: 500;
+}
+
+/* ---- EXPORT/IMPORT KNOPPEN ---- */
+.export-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.export-btn, .import-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+    transition: transform 0.1s;
+}
+
+.export-btn {
+    background: #2196F3;
+    color: white;
+}
+
+.export-btn:hover {
+    background: #1976D2;
+}
+
+.export-btn:active {
+    transform: scale(0.98);
+}
+
+.import-btn {
+    background: #FF9800;
+    color: white;
+}
+
+.import-btn:hover {
+    background: #F57C00;
+}
+
+.import-btn:active {
+    transform: scale(0.98);
+}
+
+/* ---- GESCHIEDENIS ---- */
+.history {
+    margin-top: 24px;
+}
+
+.history h2 {
+    color: #333;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 8px;
+    font-size: 18px;
 }
 
 .measurement-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px;
-    border-bottom: 1px solid #eee;
-    flex-wrap: wrap;
-    gap: 10px;
+    flex-direction: column;
+    padding: 12px 14px;
+    background: #f5f7fa;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    gap: 8px;
 }
 
-.measurement-info {
-    flex: 1;
+.measurement-item strong {
+    color: #333;
+    font-size: 14px;
 }
 
-.measurement-date {
-    font-size: 12px;
-    color: #888;
-}
-
-.bmi-badge {
-    padding: 4px 8px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.bmi-underweight { background: var(--info); color: white; }
-.bmi-healthy { background: var(--primary); color: white; }
-.bmi-overweight { background: var(--warning); color: white; }
-.bmi-obese { background: var(--danger); color: white; }
-
-/* Filter buttons */
-.filter-buttons {
+.measurement-item > div:last-child {
     display: flex;
-    gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 15px;
+    gap: 8px;
+    align-items: center;
 }
 
-.filter-btn {
-    background: var(--light);
-    color: var(--dark);
-    padding: 8px 16px;
-}
-
-.filter-btn.active {
-    background: var(--primary);
+/* ---- CLEAR KNOP ---- */
+.clear-btn {
+    width: 100%;
+    padding: 12px;
+    background: #f44336;
     color: white;
-}
-
-/* Chart container */
-.chart-container {
-    height: 300px;
-    margin-top: 15px;
-}
-
-/* Statistieken */
-.stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    text-align: center;
-}
-
-.stat-value {
-    font-size: 28px;
+    border: none;
+    border-radius: 12px;
     font-weight: bold;
-    color: var(--primary);
+    cursor: pointer;
+    margin-top: 8px;
+    font-size: 15px;
+    transition: background 0.2s;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+.clear-btn:hover {
+    background: #D32F2F;
+}
+
+.clear-btn:active {
+    transform: scale(0.98);
+}
+
+/* ============================================
+   TABLET (vanaf 600px)
+   ============================================ */
+@media (min-width: 600px) {
     body {
-        padding: 10px;
+        padding: 20px;
     }
     
-    .dashboard-grid {
-        grid-template-columns: 1fr;
+    .container {
+        padding: 30px;
+        border-radius: 24px;
     }
     
-    .measurement-item {
-        flex-direction: column;
-        text-align: center;
+    h1 {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+    
+    .lang-btn {
+        padding: 8px 20px;
+        font-size: 15px;
+        max-width: 150px;
+    }
+    
+    .input-group input {
+        padding: 14px 16px;
+        font-size: 17px;
+    }
+    
+    #saveBtn {
+        padding: 16px;
+        font-size: 18px;
     }
     
     .bmi-value {
-        font-size: 36px;
+        font-size: 56px;
+    }
+    
+    .export-buttons {
+        flex-direction: row;
+    }
+    
+    .export-btn, .import-btn {
+        flex: 1;
+    }
+    
+    .measurement-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 18px;
+    }
+    
+    .measurement-item > div:last-child {
+        flex-wrap: nowrap;
     }
 }
 
-@media (max-width: 480px) {
-    .header {
-        flex-direction: column;
-        text-align: center;
+/* ============================================
+   DESKTOP (vanaf 1024px)
+   ============================================ */
+@media (min-width: 1024px) {
+    body {
+        padding: 40px;
     }
     
-    .filter-buttons {
-        justify-content: center;
+    .container {
+        padding: 40px;
+        border-radius: 32px;
+    }
+    
+    h1 {
+        font-size: 32px;
+    }
+    
+    .input-group label {
+        font-size: 16px;
+    }
+    
+    .input-group input {
+        padding: 16px 20px;
+        font-size: 18px;
+    }
+    
+    #saveBtn {
+        padding: 18px;
+        font-size: 20px;
+    }
+    
+    #saveBtn:hover {
+        transform: scale(1.02);
+    }
+    
+    .bmi-value {
+        font-size: 64px;
+    }
+    
+    #adviceText {
+        font-size: 16px;
+    }
+    
+    .measurement-item {
+        padding: 16px 20px;
+        margin-bottom: 10px;
+    }
+    
+    .measurement-item strong {
+        font-size: 15px;
+    }
+    
+    .clear-btn {
+        padding: 14px;
+        font-size: 16px;
+    }
+    
+    .clear-btn:hover {
+        background: #D32F2F;
+    }
+}
+
+/* ============================================
+   GROTE DESKTOP (vanaf 1400px)
+   ============================================ */
+@media (min-width: 1400px) {
+    body {
+        padding: 60px;
+    }
+    
+    .container {
+        max-width: 700px;
+        padding: 50px;
+    }
+    
+    h1 {
+        font-size: 36px;
+    }
+    
+    .bmi-value {
+        font-size: 72px;
     }
 }

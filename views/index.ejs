@@ -8,7 +8,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>📊 BMI Calculator</h1>
+        <!-- TITEL -->
+        <h1 id="title">📊 BMI Calculator</h1>
         
         <!-- TAAL KNOPPEN -->
         <div class="language-switch">
@@ -18,36 +19,40 @@
         
         <!-- INPUT -->
         <div class="input-group">
-            <label id="labelLength">Lengte (cm)</label>
-            <input type="number" id="length" placeholder="175">
+            <label id="labelLength">📏 Lengte (cm)</label>
+            <input type="number" id="length" placeholder="bijv. 175">
         </div>
         
         <div class="input-group">
-            <label id="labelWeight">Gewicht (kg)</label>
-            <input type="number" id="weight" placeholder="70">
+            <label id="labelWeight">⚖️ Gewicht (kg)</label>
+            <input type="number" id="weight" placeholder="bijv. 70">
         </div>
         
-        <button id="saveBtn">Bereken BMI</button>
+        <button id="saveBtn" onclick="berekenBMI()">🧮 Bereken BMI</button>
         
         <!-- RESULTAAT -->
-        <div id="resultCard" style="display: none; margin-top: 20px; padding: 20px; background: #f0f0f0; border-radius: 12px;">
-            <h2>Jouw BMI</h2>
-            <div id="bmiValue" style="font-size: 48px; font-weight: bold;">-</div>
-            <div id="bmiCategory">-</div>
-            <p id="adviceText" style="margin-top: 10px;"></p>
+        <div id="resultCard" style="display: none;">
+            <h2 id="resultTitle">📊 Jouw BMI</h2>
+            <div id="bmiValue" class="bmi-value">-</div>
+            <div id="bmiCategory"></div>
+            <p id="adviceText"></p>
+        </div>
+        
+        <!-- EXPORT/IMPORT KNOPPEN -->
+        <div class="export-buttons">
+            <button onclick="exportData()" class="export-btn">💾 Exporteer JSON</button>
+            <button onclick="document.getElementById('importFile').click()" class="import-btn">📂 Importeer JSON</button>
+            <input type="file" id="importFile" accept=".json" style="display: none" onchange="importData(event)">
         </div>
         
         <!-- METINGEN LIJST -->
-        <div style="margin-top: 30px;">
-            <h2>📋 Geschiedenis</h2>
+        <div class="history">
+            <h2 id="historyTitle">📋 Geschiedenis</h2>
             <div id="measurementsList"></div>
-            <button id="clearAllBtn" style="margin-top: 10px; background: #f44336; color: white; border: none; padding: 10px; border-radius: 8px; width: 100%;">Alles wissen</button>
+            <button onclick="clearAll()" class="clear-btn">🗑️ Alles wissen</button>
         </div>
     </div>
     
-    <!-- SCRIPTS -->
-    <script src="/js/db.js"></script>
-    <script src="/js/i18n.js"></script>
     <script src="/js/app.js"></script>
 </body>
 </html>

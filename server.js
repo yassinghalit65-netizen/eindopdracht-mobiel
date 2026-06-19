@@ -3,20 +3,19 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
-// MIDDLEWARE - Zorg dat Express de public map kan vinden
-app.use(express.static(path.join(__dirname, 'public')));
+// STATIC BESTANDEN (CSS, JS, afbeeldingen)
+app.use(express.static('public'));
 
-// View engine
+// EJS INSTELLEN
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Routes
+// HOME PAGE
 app.get('/', (req, res) => {
     res.render('index');
 });
 
-// Start server
+// START SERVER
 app.listen(PORT, () => {
-    console.log(`✅ Server draait op http://localhost:${PORT}`);
-    console.log(`📁 Map: ${__dirname}`);
+    console.log(`✅ Server: http://localhost:${PORT}`);
 });

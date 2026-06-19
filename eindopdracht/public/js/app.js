@@ -1,246 +1,64 @@
 // ============================================
-// BMI BEREKENING FUNCTIE
+// BMI APP - MINIMALE WERKENDE VERSIE
 // ============================================
+
+console.log('✅ app.js is geladen!');
+
+// BMI berekenen functie
 function berekenBMI() {
-    console.log('🔘 berekenBMI() is aangeroepen!');
+    console.log('🔘 Knop ingedrukt!');
     
-    const lengthInput = document.getElementById('length');
-    const weightInput = document.getElementById('weight');
+    // Haal de waarden op
+    var lengthInput = document.getElementById('length');
+    var weightInput = document.getElementById('weight');
     
+    // Check of de input velden bestaan
     if (!lengthInput || !weightInput) {
         console.error('❌ Input velden niet gevonden!');
+        alert('Fout: Input velden niet gevonden!');
         return;
     }
     
-    const length = parseFloat(lengthInput.value);
-    const weight = parseFloat(weightInput.value);
+    var length = parseFloat(lengthInput.value);
+    var weight = parseFloat(weightInput.value);
     
     console.log('📏 Lengte:', length);
     console.log('⚖️ Gewicht:', weight);
     
+    // Check of de waarden geldig zijn
     if (isNaN(length) || isNaN(weight) || length <= 0 || weight <= 0) {
         alert('⚠️ Voer geldige getallen in!');
         return;
     }
     
-    const lengthM = length / 100;
-    const bmi = parseFloat((weight / (lengthM * lengthM)).toFixed(1));
+    // BMI berekenen
+    var bmi = weight / ((length / 100) * (length / 100));
+    bmi = bmi.toFixed(1);
+    
     console.log('📊 BMI:', bmi);
     
-    // Bepaal categorie
-    let category, categoryText, advice;
-    if (bmi < 18.5) {
-        category = 'underweight';
-        categoryText = '⬇️ Ondergewicht';
-        advice = '🍽️ Eet vaker en kies voor voedzame maaltijden';
-    } else if (bmi < 25) {
-        category = 'healthy';
-        categoryText = '💚 Gezond gewicht';
-        advice = '💪 Goed bezig! Blijf zo doorgaan';
-    } else if (bmi < 30) {
-        category = 'overweight';
-        categoryText = '⚠️ Overgewicht';
-        advice = '🏃 Beweeg meer en let op je voeding';
-    } else {
-        category = 'obese';
-        categoryText = '🔴 Ernstig overgewicht';
-        advice = '🏥 Raadpleeg een arts voor persoonlijk advies';
-    }
-    
-    // Meting opslaan in localStorage
-    const measurement = {
-        id: Date.now(),
-        datum: new Date().toLocaleString(),
-        lengte: length,
-        gewicht: weight,
-        bmi: bmi,
-        categorie: category
-    };
-    
-    // Opslaan
-    let measurements = JSON.parse(localStorage.getItem('bmi_measurements') || '[]');
-    measurements.push(measurement);
-    measurements.sort((a, b) => new Date(b.datum) - new Date(a.datum));
-    localStorage.setItem('bmi_measurements', JSON.stringify(measurements));
-    console.log('💾 Opgeslagen in localStorage!');
-    
     // Resultaat tonen
-    const resultCard = document.getElementById('resultCard');
-    const bmiValue = document.getElementById('bmiValue');
-    const bmiCategory = document.getElementById('bmiCategory');
-    const adviceText = document.getElementById('adviceText');
+    var resultCard = document.getElementById('resultCard');
+    var bmiValue = document.getElementById('bmiValue');
     
-    if (resultCard) resultCard.style.display = 'block';
-    if (bmiValue) bmiValue.textContent = bmi;
-    
-    const categoryColors = {
-        underweight: '#2196F3',
-        healthy: '#4CAF50',
-        overweight: '#FF9800',
-        obese: '#f44336'
-    };
-    
-    if (bmiCategory) {
-        bmiCategory.innerHTML = `
-            <span style="background: ${categoryColors[category]}; color: white; padding: 8px 20px; border-radius: 20px; font-weight: bold;">
-                ${categoryText}
-            </span>
-        `;
+    if (resultCard) {
+        resultCard.style.display = 'block';
     }
     
-    if (adviceText) {
-        adviceText.textContent = advice;
+    if (bmiValue) {
+        bmiValue.textContent = bmi;
     }
     
-    // Form resetten
+    // Input velden leegmaken
     lengthInput.value = '';
     weightInput.value = '';
     
-    // Lijst bijwerken
-    renderMeasurements();
+    // Melding
+    alert('✅ BMI berekend: ' + bmi);
 }
 
-// ============================================
-// LIJST TONEN
-// ============================================
-function renderMeasurements() {
-    const measurements = JSON.parse(localStorage.getItem('bmi_measurements') || '[]');
-    const list = document.getElementById('measurementsList');
-    
-    if (!list) return;
-    
-    if (measurements.length === 0) {
-        list.innerHTML = `<p style="color: #999;">Nog geen BMI metingen</p>`;
-        return;
-    }
-    
-    const categoryColors = {
-        underweight: '#2196F3',
-        healthy: '#4CAF50',
-        overweight: '#FF9800',
-        obese: '#f44336'
-    };
-    
-    const categoryTexts = {
-        underweight: '⬇️ Ondergewicht',
-        healthy: '💚 Gezond gewicht',
-        overweight: '⚠️ Overgewicht',
-        obese: '🔴 Ernstig overgewicht'
-    };
-    
-    list.innerHTML = measurements.map(m => `
-        <div class="measurement-item">
-            <div>
-                <strong>${m.datum}</strong><br>
-                Lengte: ${m.lengte} cm | Gewicht: ${m.gewicht} kg
-            </div>
-            <div>
-                <span style="background: ${categoryColors[m.categorie]}; color: white; padding: 4px 12px; border-radius: 12px; font-size: 14px;">
-                    BMI: ${m.bmi} (${categoryTexts[m.categorie] || m.categorie})
-                </span>
-                <button onclick="deleteMeasurement(${m.id})" style="background: #f44336; color: white; border: none; padding: 4px 10px; border-radius: 8px; cursor: pointer; margin-left: 8px;">
-                    🗑️
-                </button>
-            </div>
-        </div>
-    `).join('');
-}
-
-// ============================================
-// METING VERWIJDEREN
-// ============================================
-function deleteMeasurement(id) {
-    let measurements = JSON.parse(localStorage.getItem('bmi_measurements') || '[]');
-    measurements = measurements.filter(m => m.id !== id);
-    localStorage.setItem('bmi_measurements', JSON.stringify(measurements));
-    renderMeasurements();
-}
-
-// ============================================
-// ALLES WISSEN
-// ============================================
-function clearAll() {
-    if (confirm('Weet je zeker dat je alle metingen wilt verwijderen?')) {
-        localStorage.removeItem('bmi_measurements');
-        renderMeasurements();
-        document.getElementById('resultCard').style.display = 'none';
-    }
-}
-
-// ============================================
-// EXPORTEREN NAAR JSON
-// ============================================
-function exportData() {
-    const measurements = JSON.parse(localStorage.getItem('bmi_measurements') || '[]');
-    
-    if (measurements.length === 0) {
-        alert('Geen data om te exporteren!');
-        return;
-    }
-    
-    const jsonData = JSON.stringify(measurements, null, 2);
-    const blob = new Blob([jsonData], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `bmi_metingen_${new Date().toLocaleDateString()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-}
-
-// ============================================
-// IMPORTEREN VAN JSON
-// ============================================
-function importData(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const data = JSON.parse(e.target.result);
-            
-            if (!Array.isArray(data)) {
-                alert('Ongeldig JSON bestand!');
-                return;
-            }
-            
-            const bestaandeData = JSON.parse(localStorage.getItem('bmi_measurements') || '[]');
-            if (bestaandeData.length > 0) {
-                if (!confirm('Er bestaan al metingen. Wil je deze vervangen? Klik op Annuleren om toe te voegen.')) {
-                    const alleData = bestaandeData.concat(data);
-                    localStorage.setItem('bmi_measurements', JSON.stringify(alleData));
-                } else {
-                    localStorage.setItem('bmi_measurements', JSON.stringify(data));
-                }
-            } else {
-                localStorage.setItem('bmi_measurements', JSON.stringify(data));
-            }
-            
-            renderMeasurements();
-            alert(`✅ ${data.length} metingen geïmporteerd!`);
-        } catch (error) {
-            alert('❌ Fout bij importeren: Ongeldig JSON bestand!');
-        }
-    };
-    reader.readAsText(file);
-    event.target.value = '';
-}
-
-// ============================================
-// START DE APP
-// ============================================
-console.log('✅ app.js is geladen!');
-
-// Laad metingen bij start
-document.addEventListener('DOMContentLoaded', function() {
-    renderMeasurements();
-    console.log('✅ Lijst geladen!');
-});
-
-// Maak functies wereldwijd beschikbaar
+// Maak de functie beschikbaar voor onclick in HTML
 window.berekenBMI = berekenBMI;
-window.deleteMeasurement = deleteMeasurement;
-window.clearAll = clearAll;
-window.exportData = exportData;
-window.importData = importData;
+
+console.log('✅ berekenBMI is beschikbaar!');
+console.log('📋 Type van berekenBMI:', typeof berekenBMI);

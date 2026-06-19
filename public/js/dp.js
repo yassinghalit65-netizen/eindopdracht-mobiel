@@ -1,69 +1,50 @@
 // ============================================
-// INDEXEDDB - SIMPELE OPSLAG
+// DB FUNCTIES (Voor localStorage)
 // ============================================
-const DB_NAME = 'BMIDatabase';
-const DB_VERSION = 1;
-const STORE_NAME = 'measurements';
 
-let db = null;
+console.log('✅ db.js is geladen!');
 
-function openDB() {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
-        request.onerror = () => reject(request.error);
-        request.onsuccess = () => {
-            db = request.result;
-            resolve(db);
-        };
-        request.onupgradeneeded = (event) => {
-            const db = event.target.result;
-            if (!db.objectStoreNames.contains(STORE_NAME)) {
-                db.createObjectStore(STORE_NAME, { keyPath: 'id' });
-            }
-        };
-    });
+// Gegevens ophalen
+function getMeasurements() {
+    return JSON.parse(localStorage.getItem('bmi_measurements') || '[]');
 }
 
-async function addMeasurement(measurement) {
-    await openDB();
-    return new Promise((resolve, reject) => {
-        const transaction = db.transaction([STORE_NAME], 'readwrite');
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.add(measurement);
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-    });
+// Gegevens opslaan
+function saveMeasurements(measurements) {
+    localStorage.setItem('bmi_measurements', JSON.stringify(measurements));
 }
 
-async function getAllMeasurements() {
-    await openDB();
-    return new Promise((resolve, reject) => {
-        const transaction = db.transaction([STORE_NAME], 'readonly');
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.getAll();
-        request.onsuccess = () => resolve(request.result || []);
-        request.onerror = () => reject(request.error);
-    });
+// Meting toevoegen
+function addMeasurement(measurement) {
+    let measurements = getMeasurements();
+    measurements.push(measurement);
+    measurements.sort((a, b) => new Date(b.datum) - new Date(a.datum));
+    saveMeasurements(measurements);
 }
 
-async function deleteMeasurement(id) {
-    await openDB();
-    return new Promise((resolve, reject) => {
-        const transaction = db.transaction([STORE_NAME], 'readwrite');
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.delete(id);
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
-    });
+// Meting verwijderen
+function removeMeasurement(id) {
+    let measurements = getMeasurements();
+    measurements = measurements.filter(m => m.id !== id);
+    saveMeasurements(measurements);
 }
 
-async function clearAllMeasurements() {
-    await openDB();
-    return new Promise((resolve, reject) => {
-        const transaction = db.transaction([STORE_NAME], 'readwrite');
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.clear();
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
-    });
+// Alle metingen wissen
+function clearMeasurements() {
+    localStorage.removeItem('bmi_measurements');
 }
+
+// Metingen tellen
+function countMeasurements() {
+    return getMeasurements().length;
+}
+
+// Gemiddelde BMI berekenen
+function getAverageBMI() {
+    const measurements = getMeasurements();
+    if (measurements.length === 0) return 0;
+    const total = measurements.reduce((sum, m) => sum + m.bmi, 0);
+    return parseFloat((total / measurements.length).toFixed(1));
+}
+
+console.log('✅ db.js is klaar!');
